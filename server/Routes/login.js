@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const router = express.Router();
-
+const NODE_ENV = process.env.NODE_ENV;
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
@@ -27,8 +27,8 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      sameSite: NODE_ENV === "production" ? "None" : "lax",
+      secure: NODE_ENV === "production",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

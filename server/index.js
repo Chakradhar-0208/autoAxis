@@ -68,7 +68,7 @@ app.get("/check-login", (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return res
       .status(200)
-      .json({ message: "User Logged in true", userId: decoded });
+      .json({ message: "User Logged in true", userId: decoded.id });
   } catch (err) {
     return res.status(401).json({ message: "User Logged in false" });
   }

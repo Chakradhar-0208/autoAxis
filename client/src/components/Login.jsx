@@ -52,10 +52,10 @@ const Login = ({ setIsLogged }) => {
         setMsg(data.message);
         setIsLogged(true);
         localStorage.setItem("userId", data.userId);
-        console.log("userid form login, set into locallstorage", userId);
-        setTimeout(() => {
+        console.log("userid form login, set into locallstorage", data.userId);
+        // setTimeout(() => {
           navigate("/");
-        }, 3000);
+        // }, 3000);
       } else {
         setMsg(data.message);
       }

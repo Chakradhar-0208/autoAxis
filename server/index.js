@@ -20,7 +20,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: "https://auto-axis-cp.vercel.app",
     credentials: true,
   })
 );

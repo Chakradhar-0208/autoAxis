@@ -70,7 +70,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-[100dvh] min-h-[500px]">
+    <div className="flex  dark:bg-[#050505] flex-col justify-center items-center h-[100dvh] min-h-[500px]">
       <div className="absolute top-6 right-8">
         <ModeToggle />
       </div>
@@ -92,6 +92,7 @@ const Signup = () => {
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
               <Input
+              placeholder="John Doe"
                 id="name"
                 name="name"
                 type="text"
@@ -103,6 +104,7 @@ const Signup = () => {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
+              placeholder="john@test.com"
                 id="email"
                 name="email"
                 type="email"
@@ -114,6 +116,7 @@ const Signup = () => {
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input
+              placeholder="john"
                 id="password"
                 name="password"
                 type="password"

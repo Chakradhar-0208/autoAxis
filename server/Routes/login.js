@@ -1,16 +1,16 @@
-import express from "express";
-import bcrypt from "bcrypt";
-import User from "../models/User.js";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import express from "express";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 dotenv.config();
 const router = express.Router();
-const NODE_ENV = process.env.NODE_ENV;
+
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
-  try {
+  try { 
     const isUser = await User.findOne({ email });
     if (!isUser) {
       return res.status(404).json({ message: "Email not found in database." });
@@ -27,14 +27,14 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: NODE_ENV === "production" ? "None" : "lax",
-      secure: NODE_ENV === "production",
+      sameSite: "lax",
+      secure: false,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res
       .status(200)
-      .json({ message: `Welcome Back, ${isUser.name}!`, userId: isUser._id });
+      .json({ userName:isUser.name, userId: isUser._id });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error during login" });

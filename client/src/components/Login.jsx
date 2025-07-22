@@ -52,10 +52,11 @@ const Login = ({ setIsLogged }) => {
         setMsg(data.message);
         setIsLogged(true);
         localStorage.setItem("userId", data.userId);
+        localStorage.setItem('userName',data.userName);
         console.log("userid form login, set into locallstorage", data.userId);
-        // setTimeout(() => {
+        setTimeout(() => {
           navigate("/");
-        // }, 3000);
+        }, 3000);
       } else {
         setMsg(data.message);
       }
@@ -68,7 +69,7 @@ const Login = ({ setIsLogged }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center h-[100dvh] items-center min-h-[500px]">
+    <div className="flex flex-col justify-center  dark:bg-[#050505] h-[100dvh] items-center min-h-[500px]">
       <div className="absolute top-6 right-8">
         <ModeToggle />
       </div>
@@ -105,6 +106,7 @@ const Login = ({ setIsLogged }) => {
                 id="password"
                 type="password"
                 name="password"
+                placeholder="john"
                 value={formData.password}
                 onChange={handleChange}
                 required

@@ -1,6 +1,6 @@
+import dotenv from "dotenv";
 import express from "express";
 import Car from "../models/Car.js";
-import dotenv from "dotenv";
 import {
   getAllCars,
   createCar,

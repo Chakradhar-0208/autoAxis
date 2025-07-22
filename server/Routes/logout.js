@@ -1,16 +1,16 @@
 import express from "express";
-const router = express.Router();
-const NODE_ENV = process.env.NODE_ENV;
 
+const router = express.Router();
 
 router.get("/", (req, res) => {
   res.clearCookie("token", {
+    path: "/",
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+    secure: true,
   });
 
-  res.status(200).json({ message: "Logged out successfully" });
+  return res.status(200).json({ message: "User logged out successfully!" });
 });
 
 export default router;

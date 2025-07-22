@@ -1,224 +1,320 @@
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Form } from "./ui/form";
-import { Button } from "./ui/button";
-import { Calendar } from "./ui/calendar";
-import React from "react";
+import React from "react"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Form } from "./ui/form"
+import { Button } from "./ui/button"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
 
 const ListACar = () => {
-  const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState({});
-  const [formData, setFormData] = React.useState("");
+  const [formData, setFormData] = React.useState({})
+  const [selectedImages, setSelectedImages] = React.useState([])
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    document.title = "Post Your Car | AutoAxis"
+  }, [])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const [selectedImages, setSelectedImages] = React.useState([]);
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleImageChange = (e) => {
-    setSelectedImages([...e.target.files]);
-  };
-
-  //   const handleSubmit = async (e) => {
-  //       e.preventDefault();
-
-  //       try{
-
-  //         const res = await fetch(`${ import.meta.env.VITE_API_URL}/car/createCar`,{
-  //             method:"POST",
-  //             credentials:"include",
-  //             headers:{
-  //                 "Content-Type":"multiform/data",
-  //             },
-  //             body:   JSON.stringify(formData),
-  //         });
-
-  //         // const data = await res.json();
-  //         console.log(res)
-  //       }catch(err){
-  //         console.log("unable to List car, ", err);
-  //       }
-
-  //   };
+    setSelectedImages([...e.target.files])
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    setIsSubmitting(true)
 
-    const form = new FormData();
+    const form = new FormData()
 
-    console.log("Appending data into form");
-    for (let key in formData) {
-      form.append(key, formData[key]);
+    if (formData.year) {
+      form.append("year", formData.year)
     }
 
-    console.log("Appending images into form");
+    for (let key in formData) {
+      if (key !== "year") {
+        form.append(key, formData[key])
+      }
+    }
+
     for (let file of selectedImages) {
-      form.append("images", file);
+      form.append("images", file)
     }
 
     try {
-      console.log("Sent Request");
       const res = await fetch(`${import.meta.env.VITE_API_URL}/car/createCar`, {
         method: "POST",
         credentials: "include",
-        body: form, // No need to set Content-Type; browser will set it with boundary
-      });
+        body: form,
+      })
 
-      const data = await res.json();
-      console.log(data);
+      const data = await res.json()
+
+      if (res.ok) {
+        toast("Car uploaded successfully", {
+          description: "Redirecting to your cars list...",
+        })
+        setTimeout(() => navigate("/userCars"), 1500)
+      } else {
+        throw new Error(data?.message || "Something went wrong!")
+      }
     } catch (err) {
-      console.log("Unable to list car:", err);
+      toast("Upload failed", {
+        description: err.message || "Failed to upload car.",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
-  };
+  }
+
+  const renderYearOptions = () => {
+    const years = []
+    const currentYear = new Date().getFullYear()
+    for (let y =currentYear ; y >=1980 ; y--) {
+      years.push(
+        <SelectItem key={y} value={y.toString()}>
+          {y}
+        </SelectItem>
+      )
+    }
+    return years
+  }
 
   return (
-    <Form>
-      <Label htmlFor="make">Make</Label>
-      <Input
-        required
-        type="text"
-        id="make"
-        name="make"
-        value={formData.make || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="model">Model</Label>
-      <Input
-        required
-        type="text"
-        id="model"
-        name="model"
-        value={formData.model || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="year">Year</Label>
-      <Input
-        required
-        type="number"
-        id="year"
-        name="year"
-        value={formData.year || ""}
-        onChange={handleChange}
-      ></Input>
-      {/* <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id="date"
-            className="w-48 justify-between font-normal"
+    <div className="max-w-full  dark:bg-[#050505]">
+    <div className="max-w-lg  md:max-w-2xl mx-auto flex flex-col justify-center items-center space-y-3 py-20">
+      <Form>
+        <h1 className="font-bold -mt-10 mb-3 text-3xl">POST YOUR CAR</h1>
+
+        <div className="w-[80%]">
+          <Label htmlFor="make">Make</Label>
+          <Input
+            placeholder="e.g., Volkswagen"
+            required
+            type="text"
+            id="make"
+            name="make"
+            value={formData.make || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="w-[80%]">
+          <Label htmlFor="model">Model</Label>
+          <Input
+            placeholder="e.g., Virtus"
+            required
+            type="text"
+            id="model"
+            name="model"
+            value={formData.model || ""}
+            onChange={handleChange}
+          />
+        </div>
+<div className="w-[80%]">
+  <Label htmlFor="variant">Variant</Label>
+  <Input
+    placeholder="e.g., Highline 1.0 TSI"
+    required
+    type="text"
+    id="variant"
+    name="variant"
+    value={formData.variant || ""}
+    onChange={handleChange}
+  />
+</div>
+
+        <div className="w-[80%]">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            placeholder="e.g., 15,60,000"
+            required
+            type="text"
+            id="price"
+            name="price"
+            value={formData.price || ""}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="w-[80%]">
+          <Label htmlFor="tag">Tag</Label>
+          <Input
+            placeholder="NEW"
+            required
+            type="text"
+            id="tag"
+            name="tag"
+            value={formData.tag || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="w-[80%]">
+          <Label>Fuel Type</Label>
+          <Select
+            value={formData.fuelType || ""}
+            onValueChange={(val) =>
+              setFormData((prev) => ({ ...prev, fuelType: val }))
+            }
           >
-            {date ? date.toLocaleDateString() : "Select date"}
-            <ChevronDownIcon />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={date}
-            captionLayout="dropdown"
-            onSelect={(date) => {
-              setDate(date)
-              setOpen(false)
-            }}
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select fuel type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Petrol">Petrol</SelectItem>
+              <SelectItem value="Diesel">Diesel</SelectItem>
+              <SelectItem value="Electric">Electric</SelectItem>
+              <SelectItem value="Hybrid">Hybrid</SelectItem>
+              <SelectItem value="CNG">CNG</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="w-[80%]">
+          <Label>Transmission</Label>
+          <Select
+            value={formData.transmission || ""}
+            onValueChange={(val) =>
+              setFormData((prev) => ({ ...prev, transmission: val }))
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select transmission" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Manual">Manual</SelectItem>
+              <SelectItem value="Automatic">Automatic</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="w-[80%]">
+          <Label>Year</Label>
+          <Select
+            value={formData.year || ""}
+            onValueChange={(val) =>
+              setFormData((prev) => ({ ...prev, year: val }))
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select year" />
+            </SelectTrigger>
+            <SelectContent>{renderYearOptions()}</SelectContent>
+          </Select>
+        </div>
+
+        <div className="w-[80%]">
+          <Label htmlFor="location">Location</Label>
+          <Input
+            placeholder="e.g., Hyderabad"
+            required
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location || ""}
+            onChange={handleChange}
           />
-        </PopoverContent>
-      </Popover> */}
-      <Label htmlFor="price">Price</Label>
-      <Input
-        required
-        type="text"
-        id="price"
-        name="price"
-        value={formData.price || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="fuel">Fuel Type</Label>
-      <Input
-        required
-        type="text"
-        id="fuel"
-        name="fuelType"
-        value={formData.fuelType || ""}
-        onChange={handleChange}
-      ></Input>
+        </div>
 
-      <Label htmlFor="transmission">Transmission</Label>
-      <Input
-        required
-        type="text"
-        id="transmission"
-        name="transmission"
-        value={formData.transmission || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="location">Location</Label>
-      <Input
-        required
-        type="text"
-        id="location"
-        name="location"
-        value={formData.location || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="mileage">Mileage</Label>
-      <Input
-        required
-        type="text"
-        id="mileage"
-        name="mileage"
-        value={formData.mileage || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="desc">Description</Label>
-      <Input
-        required
-        type="text"
-        id="desc"
-        name="description"
-        value={formData.description || ""}
-        onChange={handleChange}
-      ></Input>
-
-      <Label htmlFor="color">Color</Label>
-      <Input
-        required
-        type="text"
-        id="color"
-        name="color"
-        value={formData.color || ""}
-        onChange={handleChange}
-      ></Input>
-      <Label htmlFor="images">Upload Images</Label>
-      <Input
-        required
-        type="file"
-        id="images"
-        name="images"
-        multiple
-        onChange={handleImageChange}
-      />
-      {selectedImages &&
-        selectedImages.map((image, index) => (
-          <img
-            key={index}
-            src={URL.createObjectURL(image)}
-            alt={`Preview ${index}`}
-            className="w-32 h-32 object-cover rounded mb-2"
+        <div className="w-[80%]">
+          <Label htmlFor="mileage">Mileage</Label>
+          <Input
+            placeholder="e.g., 16 km/l"
+            required
+            type="text"
+            id="mileage"
+            name="mileage"
+            value={formData.mileage || ""}
+            onChange={handleChange}
           />
-        ))}
+        </div>
 
-      <Button type="submit" onClick={handleSubmit}>
-        Upload
-      </Button>
-    </Form>
-  );
-};
+        <div className="w-[80%]">
+          <Label htmlFor="kmsDriven">KMs Driven</Label>
+          <Input
+            placeholder="e.g., 30,000 km"
+            required
+            type="text"
+            id="kmsDriven"
+            name="kmsDriven"
+            value={formData.kmsDriven || ""}
+            onChange={handleChange}
+          />
+        </div>
 
-export default ListACar;
+        <div className="w-[80%]">
+          <Label htmlFor="description">Description</Label>
+          <Input
+            placeholder="e.g., Well-maintained, single owner..."
+            required
+            type="text"
+            id="description"
+            name="description"
+            value={formData.description || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="w-[80%]">
+          <Label htmlFor="color">Color</Label>
+          <Input
+            placeholder="e.g., Deep Black"
+            required
+            type="text"
+            id="color"
+            name="color"
+            value={formData.color || ""}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="w-[80%]">
+          <Label htmlFor="images">Upload Images</Label>
+          <Input
+            required
+            type="file"
+            id="images"
+            name="images"
+            multiple
+            onChange={handleImageChange}
+          />
+        </div>
+
+        <div className="border flex w-[80%] rounded-lg overflow-auto space-x-2 mt-2">
+          {selectedImages.map((image, index) => (
+            <img
+              key={index}
+              src={URL.createObjectURL(image)}
+              alt={`Preview ${index}`}
+              className="w-36 h-36 object-cover rounded"
+            />
+          ))}
+        </div>
+
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="mt-4"
+        >
+          {isSubmitting ? "Uploading..." : "Upload"}
+        </Button>
+      </Form>
+    </div>
+    </div>
+  )
+}
+
+export default ListACar

@@ -1,7 +1,7 @@
+import fs from "fs/promises";
+import jwt from "jsonwebtoken";
 import Car from "../models/Car.js";
 import cloudinary from "../utils/cloudinary.js";
-import jwt from "jsonwebtoken";
-import fs from "fs/promises";
 
 export const createCar = async (req, res) => {
   try {
@@ -38,7 +38,7 @@ export const createCar = async (req, res) => {
   } catch (err) {
     console.error("Create car error:", err);
     res.status(500).json({
-      message: "Failed to create car, sorry",
+      message: "Failed to create car",
       error: err.message,
     });
   }
@@ -48,23 +48,14 @@ export const getCarById = async (req, res) => {
   try {
     const car = await Car.findById(req.params.id).populate(
       "postedBy",
-      "-password"
+      "name email"
     );
-    if (!car) return res.status(404).json({ message: "Car not found" });
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
 
     res.status(200).json(car);
-    await Promise.all(
-      req.files.map(async (file) => {
-        try {
-          await fs.rm(`uploads/autoAxis/${req.body.model}`, {
-            recursive: true,
-            force: true,
-          });
-        } catch (err) {
-          console.warn("Failed to delete:", file.path, err.message);
-        }
-      })
-    );
   } catch (err) {
     res.status(500).json({ message: "Failed to get car", error: err.message });
   }
@@ -125,7 +116,10 @@ export const deleteCar = async (req, res) => {
 
 export const getCarsByUser = async (req, res) => {
   try {
-    const cars = await Car.find({ postedBy: req.params.userId });
+    const cars = await Car.find({ postedBy: req.params.userId }).populate(
+      "postedBy",
+      "name email"
+    );
     res.status(200).json(cars);
   } catch (err) {
     res

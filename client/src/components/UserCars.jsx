@@ -1,67 +1,113 @@
+import { toast } from "sonner";
+import UserCarCard from "./UserCarCard";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useTheme } from "./theme-provider";
+import { Button } from "../components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const MyCars = () => {
   const userId = localStorage.getItem("userId");
-  if (!userId) console.error("UserId fromm localStorage is not found");
+  const navigate = useNavigate();
   const [cars, setCars] = useState([]);
 
+  const { theme } = useTheme();
   const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
+    document.title = "User Cars | AutoAxis";
+
+    if (!userId) {
+      toast.error("User not found. Please log in.");
+      navigate("/login");
+      return;
+    }
+
     fetch(`${API_URL}/car/getCarsByUser/${userId}`)
       .then((res) => res.json())
-      .then((data) => setCars(data));
+      .then((data) => setCars(data))
+      .catch((err) => {
+        console.error("Failed to fetch cars", err);
+        toast.error("Failed to load your cars.");
+      });
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(`${API_URL}/logout`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.removeItem("userId");
+        toast.success("Logged out successfully.");
+        navigate("/login");
+      } else {
+        throw new Error(data?.message || "Logout failed");
+      }
+    } catch (err) {
+      console.error("Logout failed:", err);
+      toast.error("Logout failed. Please try again.");
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-4">
-      <h2 className="text-2xl font-bold mb-2">My Cars</h2>
-      {cars.map((car) => (
-        <div key={car._id} className="p-4 border rounded shadow">
-          <div>
-            <img src={car.images[0]} alt="" />
-          </div>
-          <h3 className="text-xl font-semibold">
-            {car.make} {car.model}
-          </h3>
-          <p>
-            {car.year} | ₹{car.price}
-          </p>
-          <div className="space-x-2 mt-2">
-            <Link
-              to={`/getCarbyId/${car._id}`}
-              className="text-blue-600 underline"
-            >
-              View
-            </Link>
-            <Link
-              to={`/updateCar/${car._id}`}
-              className="text-green-600 underline"
-            >
-              Edit
-            </Link>
-            <button
-              onClick={async () => {
-                console.log(car._id);
-                const res = await fetch(
-                  `${API_URL}/car/deleteCar/${car._id}`,
-                  {
-                    method: "DELETE",
-                    credentials: "include",
-                  }
-                );
-                if (res.ok) {
-                  setCars(cars.filter((c) => c._id !== car._id));
-                  alert("Deleted");
-                }
-              }}
-              className="text-red-600 underline"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
+    <div className="flex min-h-screen flex-col  dark:bg-[#050505] justify-start items-center py-5 space-y-4">
+      <div className="flex justify-between items-center w-[85%]">
+        <h2 className="text-3xl font-bold">MY CARS</h2>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Logout</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Are You Sure?</DialogTitle>
+              <DialogDescription>
+                You are about to be logged out. Click "Logout" to confirm.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="flex flex-wrap w-[80%] py-5 gap-4 justify-center">
+        {cars.length > 0 ? (
+          cars.map((car) => (
+            <UserCarCard
+              key={car._id}
+              car={car}
+              cars={cars}
+              setCars={setCars}
+              API_URL={API_URL}
+            />
+          ))
+        ) : (
+          <p className="text-gray-500">No cars listed yet.</p>
+        )}
+      </div>
     </div>
   );
 };

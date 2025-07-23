@@ -169,7 +169,7 @@ const CarDetails = () => {
           </span>
         </div>
       </div>
-\
+
       {car.description && (
         <div className="mt-6">
           <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">

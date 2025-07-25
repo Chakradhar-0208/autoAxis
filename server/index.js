@@ -20,7 +20,8 @@ const CLIENT_URL = process.env.CLIENT_URL;
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
-  "https://auto-axis-cp.vercel.app"
+  "https://auto-axis-cp.vercel.app",
+  "https://auto-axis-test.vercel.app/"
 ];
 
 app.use(

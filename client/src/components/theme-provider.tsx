@@ -10,11 +10,13 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   theme: Theme
+  resolvedTheme: "dark" | "light"
   setTheme: (theme: Theme) => void
 }
 
 const initialState: ThemeProviderState = {
   theme: "system",
+  resolvedTheme: "light",
   setTheme: () => null,
 }
 
@@ -32,34 +34,55 @@ export function ThemeProvider({
 useEffect(() => {
   const root = window.document.documentElement;
 
-  const applyTheme = (resolvedTheme: Theme) => {
+  const applyTheme = (resolved: "dark" | "light") => {
     root.classList.remove("light", "dark");
-    root.classList.add(resolvedTheme);
+    root.classList.add(resolved);
+    setResolvedTheme(resolved);
   };
 
   if (theme === "system") {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const systemTheme = mediaQuery.matches ? "dark" : "light";
-    applyTheme(systemTheme);
+    const mediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+
+    applyTheme(mediaQuery.matches ? "dark" : "light");
 
     const handleChange = (e: MediaQueryListEvent) => {
       applyTheme(e.matches ? "dark" : "light");
     };
 
     mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+
+    return () =>
+      mediaQuery.removeEventListener("change", handleChange);
   }
 
   applyTheme(theme);
 }, [theme]);
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">(
+  () => {
+    const savedTheme = localStorage.getItem(storageKey) as Theme | null;
 
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
-      setTheme(theme)
-    },
+    const currentTheme = savedTheme || defaultTheme;
+
+    if (currentTheme === "system") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    return currentTheme;
   }
+);
+
+const value = {
+  theme,
+  resolvedTheme,  
+  setTheme: (theme: Theme) => {
+    localStorage.setItem(storageKey, theme);
+    setTheme(theme);
+  },
+};
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>

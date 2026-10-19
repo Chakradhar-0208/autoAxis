@@ -23,7 +23,7 @@ const Login = ({ setIsLogged }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Login | Authenticator App";
+    document.title = "Login | AutoAxis";
   }, []);
 
   const handleChange = (e) => {
@@ -52,7 +52,7 @@ const Login = ({ setIsLogged }) => {
         setMsg(data.message);
         setIsLogged(true);
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem('userName',data.userName);
+        localStorage.setItem("userName", data.userName);
         console.log("userid form login, set into locallstorage", data.userId);
         setTimeout(() => {
           navigate("/");

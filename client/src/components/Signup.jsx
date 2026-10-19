@@ -27,7 +27,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Signup | Authenticator App";
+    document.title = "Signup | AutoAxis";
   }, []);
 
   const handleChange = (e) => {

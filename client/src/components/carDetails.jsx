@@ -23,15 +23,19 @@ import {
 const CarDetails = () => {
   const { id } = useParams();
   const [car, setCar] = useState(null);
+  const [isOwner, setIsOwner]= useState(false);
   const SERVER_API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     document.title = `Car Page | AutoAxis`;
     const fetchCar = async () => {
       try {
+        const userId = localStorage.getItem("userId");
         const res = await fetch(`${SERVER_API}/car/getCarbyId/${id}`);
         const data = await res.json();
-        
+        if(userId === data.postedBy._id){
+          setIsOwner(true);
+        }
         const normalizedData = {
           ...data,
           kmsDriven: Number(data.kmsDriven) || null,
@@ -49,19 +53,23 @@ const CarDetails = () => {
   if (!car) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <div className="max-w-full  dark:bg-[#050505]">
-    <div className=" max-w-4xl mx-auto px-4 pb-10 pt-6">
+    <div className="w-full dark:bg-[#050505] px-4 sm:px-6 md:px-8 lg:px-10 ">
+    <div className=" max-w-5xl mx-auto pb-8">
       <h1 className="text-3xl font-bold mb-2 text-primary">
         {car.make} {car.model}
       </h1>
       <div className="flex justify-between items-center mb-4 ">
         <p className="text-xl font-semibold text-green-600  dark:text-green-400">
-          ₹{new Intl.NumberFormat("en-IN").format(car.price)}
+          ₹ {new Intl.NumberFormat("en-IN").format(car.price)}
         </p>
-        <Button className="h-[30px] sm:h-[36px]">Contact</Button>
+        {isOwner?<div>
+        <Link to={`/updateCar/${car._id}`}>
+          <Button>Update</Button>
+        </Link>
+      </div>:<Button >Contact</Button>}
       </div>
       <div className="mb-6 overflow-hidden rounded-lg">
-        <Carousel className="w-full">
+        <Carousel className="w-full lg:w-[85%] mx-auto">
           <CarouselContent>
             {car.images.map((url, index) => (
               <CarouselItem key={index} className="flex justify-center">
@@ -181,12 +189,6 @@ const CarDetails = () => {
           </p>
         </div>
       )}
-
-      <div className="mt-8 w-full flex justify-between">
-        <Link to={`/updateCar/${car._id}`}>
-          <Button>Update Car Details</Button>
-        </Link>
-      </div>
       </div>
     </div>
   );

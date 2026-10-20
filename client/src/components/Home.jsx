@@ -215,7 +215,7 @@ const Home = ({ setIsLogged }) => {
 
   return (
     <div className="w-full dark:bg-[#050505] min-h-screen px-4 sm:px-6 md:px-8 lg:px-10">
-      <div className="max-w-7xl mx-auto overflow-hidden min-h-screen">
+      <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-8">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Featured Cars</h1>
         </div>

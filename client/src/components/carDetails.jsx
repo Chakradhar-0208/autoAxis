@@ -33,6 +33,7 @@ const CarDetails = () => {
         const userId = localStorage.getItem("userId");
         const res = await fetch(`${SERVER_API}/car/getCarbyId/${id}`);
         const data = await res.json();
+        document.title = `${data.make} ${data.model} ${data.year} ${data.variant} | AutoAxis`;
         if(userId === data.postedBy._id){
           setIsOwner(true);
         }

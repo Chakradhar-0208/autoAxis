@@ -19,12 +19,12 @@ const MyCars = () => {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
-
+  const userName = localStorage.getItem("userName");
   const { theme } = useTheme();
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    document.title = "User Cars | AutoAxis";
+    document.title = "Profile | AutoAxis";
 
     if (!userId) {
       toast.error("User not found. Please log in.");
@@ -63,50 +63,66 @@ const MyCars = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col  dark:bg-[#050505] justify-start items-center py-5 space-y-4">
-      <div className="flex justify-between items-center w-[85%]">
-        <h2 className="text-3xl font-bold">MY CARS</h2>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Logout</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Are You Sure?</DialogTitle>
-              <DialogDescription>
-                You are about to be logged out. Click "Logout" to confirm.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+    <div className="dark:bg-[#050505] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pb-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-row justify-between items-center w-full mb-4 gap-4 bg-[#f0f0f0] p-4 rounded-xl">
+          {/* flex-col-reverse sm:flex-row */}
+          <div className="flex flex-col sm:flex-row items-center sm:pb-0 gap-4">
+             {/* pb-4 */}
+            <img src="https://macromissionary.com/wp-content/uploads/2021/10/dummy-avatar-2.jpg" alt="profile-icon" className="rounded-full w-[6rem] h-[6rem] object-cover hidden"/>
+            <h2 className="text-3xl font-bold">
+              {userName ? userName : "User"}
+            </h2>
+          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-[80px] ms-auto">Logout</Button>
+            </DialogTrigger>
+            <DialogContent className="min-w-[320px] max-w-[85%] xs:max-w-[425px] rounded-md">
+              <DialogHeader>
+                <DialogTitle>Are You Sure?</DialogTitle>
+                <DialogDescription>
+                  You are about to be logged out.{" "}
+                  <span className="block sm:inline">
+                    Click "Logout" to confirm.
+                  </span>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex flex-row gap-4 justify-between">
+                <DialogClose asChild>
+                  <Button variant="outline" className="w-full">
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleLogout}
+                  className="w-full"
+                >
+                  Logout
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <h1 className="text-2xl font-bold mb-4">My Cars</h1>
 
-      <div className="flex flex-wrap w-[80%] py-5 gap-4 justify-center">
-        {cars.length > 0 ? (
-          cars.map((car) => (
-            <UserCarCard
-              key={car._id}
-              car={car}
-              cars={cars}
-              setCars={setCars}
-              API_URL={API_URL}
-            />
-          ))
-        ) : (
-          <p className="text-gray-500">No cars listed yet.</p>
-        )}
+        <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
+          {cars.length > 0 ? (
+            cars.map((car) => (
+              <UserCarCard
+                key={car._id}
+                car={car}
+                cars={cars}
+                setCars={setCars}
+                API_URL={API_URL}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500">No cars listed yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );

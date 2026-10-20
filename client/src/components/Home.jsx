@@ -34,7 +34,7 @@ const Home = ({ setIsLogged }) => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const makeModelMap = {
-    Maruti: ["Swift", "Baleno", "Dzire", "WagonR"],
+    Suzuki: ["Swift", "Baleno", "Dzire", "WagonR"],
     Hyundai: ["i20", "Creta", "Venue", "Verna"],
     Tata: ["Altroz", "Nexon", "Harrier", "Tiago"],
     Mahindra: ["XUV300", "Thar", "Scorpio", "Bolero"],
@@ -59,10 +59,10 @@ const Home = ({ setIsLogged }) => {
     "Yellow",
   ];
   const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 9;
+  const carsPerPage = 12;
   const [totalPages, setTotalPages] = useState(1);
 
-  const yearOptions = Array.from({ length: 15 }, (_, i) => `${2024 - i}`);
+  const yearOptions = Array.from({ length: 15 }, (_, i) => `${2026 - i}`);
   const kmsOptions = [
     { label: "0 - 10,000", value: "10000" },
     { label: "10,000 - 30,000", value: "30000" },
@@ -401,7 +401,7 @@ const Home = ({ setIsLogged }) => {
             </div>
           </div>
         </fieldset>
-        <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4 sm:px-4">
+        <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
           {filteredCars.length > 0 ? (
             filteredCars.map((car) => <CarCard key={car._id} car={car} />)
           ) : (
@@ -411,7 +411,7 @@ const Home = ({ setIsLogged }) => {
           )}
         </div>
         {totalPages > 1 && (
-          <div className="flex justify-center my-8 ">
+          <div className="flex justify-center mt-8 ">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>

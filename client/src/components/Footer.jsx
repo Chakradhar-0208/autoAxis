@@ -4,7 +4,7 @@ import { useTheme } from "./theme-provider";
 const Footer = () => {
   const { resolvedTheme } = useTheme();
   return (
-    <footer className="w-full dark:bg-[#000000] flex flex-col items-center justify-center border-t border-gray-400 dark:border-dark-400">
+    <footer className="w-full dark:bg-[#000000] flex flex-col items-center justify-center border-t border-gray-400 dark:border-dark-400 mt-8">
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 pt-8 sm:pt-10 pb-8 ">
         <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:gap-8">
           <div>

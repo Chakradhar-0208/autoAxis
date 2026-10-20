@@ -9,7 +9,7 @@ const CarCard = ({ car }) => {
   return (
     <Link to={`/getCarById/${car._id}`}>
       <div
-        className="border shadow-md rounded-xl min-w-[18rem]  max-w-[22rem] transition transform hover:scale-[1.02] hover:shadow-lg duration-200  
+        className="border shadow-md rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] transition transform hover:scale-[1.02] hover:shadow-lg duration-200  
       bg-white text-black dark:bg-[#010101] dark:text-white
       hover:shadow-gray-300 dark:hover:shadow-gray-800 cursor-pointer"
       >

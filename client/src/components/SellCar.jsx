@@ -66,7 +66,7 @@ const ListACar = () => {
         toast("Car uploaded successfully", {
           description: "Redirecting to your cars list...",
         });
-        setTimeout(() => navigate("/userCars"), 1500);
+        setTimeout(() => navigate("/profile"), 1500);
       } else {
         throw new Error(data?.message || "Something went wrong!");
       }

@@ -94,7 +94,7 @@ const UpdateCar = () => {
         toast.success("Car updated successfully", {
           description: "Redirecting to your car page...",
         });
-        setTimeout(() => navigate(`/getCarbyId/${id}`), 1500);
+        setTimeout(() => navigate(`/car/${id}`), 1500);
       } else {
         throw new Error(data?.message || "Something went wrong!");
       }

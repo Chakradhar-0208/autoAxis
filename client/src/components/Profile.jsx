@@ -3,7 +3,7 @@ import UserCarCard from "./UserCarCard";
 import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
-import { Button } from "../components/ui/button";
+import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -113,7 +113,7 @@ const MyCars = () => {
         </div>
         <div className="flex justify-between mb-4">
           <h1 className="text-2xl font-bold">My Cars</h1>
-          <Link to="/uploadCar">
+          <Link to="/sellCar">
           {/* <Button className="rounded-full hidden" variant="default">Sell</Button> */}
           <Button variant="outline" className="rounded-full shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 px-2.5 py-1.5 transition transform hover:scale-[1.2] duration-300 hover:shadow-lg hover:shadow-[#000]/15 dark:hover:shadow-[#fff]/15"><FiPlus/></Button>
           </Link>

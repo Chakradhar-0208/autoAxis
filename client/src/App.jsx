@@ -5,8 +5,8 @@ import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Header from "./components/Header";
 import { useEffect, useState } from "react";
-import UserCars from "./components/UserCars";
-import ListACar from "./components/ListACar";
+import UserCars from "./components/Profile";
+import ListACar from "./components/SellCar";
 import UpdateCar from "./components/UpdateCar";
 import CarDetails from "./components/carDetails";
 import { Skeleton } from "./components/ui/skeleton";
@@ -110,12 +110,12 @@ function AppRouter({ isLogged, setIsLogged, checkLogin }) {
             isLogged ? <Navigate to="/" /> : <Login setIsLogged={setIsLogged} />
           }
         />
-        <Route path="/uploadCar" element={<ListACar />} />
+        <Route path="/sellCar" element={<ListACar />} />
         <Route path="/updateCar/:id" element={<UpdateCar />} />
-        <Route path="/getCarById/:id" element={<CarDetails />} />
-        <Route path="/userCars" element={<UserCars />} />
+        <Route path="/car/:id" element={<CarDetails />} />
+        <Route path="/profile" element={<UserCars />} />
 
-        <Route path="/userCars/:userId?" element={<UserCars />} />
+        {/* <Route path="/userCars/:userId?" element={<UserCars />} /> */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
 

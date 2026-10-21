@@ -21,13 +21,13 @@ const Header = ({ isLogged, setIsLogged, checkLogin }) => {
           />
         </a>
         <div className="flex items-center sm:space-x-4 underline font-semibold ">
-          <Link to="/userCars">
+          <Link to="/profile">
             {/* <p>{localStorage.getItem("userName")}</p> */}
             <FiUser className="w-5 h-5 mr-4 sm:mr-0" />
           </Link>
           <FiHeart className="w-5 h-5 hidden sm:block cursor-pointer" />
           <ModeToggle />
-          <Link to="/uploadCar">
+          <Link to="/sellCar">
             <Button className="text-md rounded-full py-0 px-[24px] hidden sm:block ">
               Sell
             </Button>

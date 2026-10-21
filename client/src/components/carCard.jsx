@@ -7,7 +7,7 @@ const CarCard = ({ car }) => {
   const navigate = useNavigate();
 
   return (
-    <Link to={`/getCarById/${car._id}`}>
+    <Link to={`/car/${car._id}`}>
       <div
         className="border shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] transition transform hover:scale-[1.02] hover:shadow-lg duration-200  
       bg-white text-black dark:bg-[#010101] dark:text-white

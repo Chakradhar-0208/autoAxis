@@ -6,7 +6,7 @@ import { useTheme } from "./theme-provider";
 const Header = ({ isLogged, setIsLogged, checkLogin }) => {
   const { resolvedTheme } = useTheme();
   return (
-    <div className="rounded-b-xl bg-white/60 dark:bg-[#000000]/60 backdrop-blur-2xl shadow-md sticky top-0 bg-white text-black dark:bg-[#000000] dark:text-white border-b-1 h-[75px] z-50 px-4 sm:px-6 md:px-8 lg:px-10 mb-8 sm:mb-10 md:mb-14">
+    <div className="rounded-b-xl bg-white/60 dark:bg-[#000000]/60 backdrop-blur-2xl shadow-md shadow-[#000]/10 dark:shadow-[#fff]/5 sticky top-0 text-black  dark:text-white border-b-1 h-[75px] z-50 px-4 sm:px-6 md:px-8 lg:px-10 mb-8 sm:mb-10 md:mb-14">
       {/* mb-8 sm:mb-10 md:mb-14 */}
       <div className="flex space-x-3 items-center justify-between max-w-7xl mx-auto w-full h-full ">
         <a href="/">

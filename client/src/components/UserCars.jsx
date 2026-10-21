@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import UserCarCard from "./UserCarCard";
+import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Button } from "../components/ui/button";
@@ -65,11 +66,15 @@ const MyCars = () => {
   return (
     <div className="dark:bg-[#050505] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pb-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-row justify-between items-center w-full mb-4 gap-4 bg-[#f0f0f0] p-4 rounded-xl">
+        <div className="flex  flex-col-reverse sm:flex-row justify-between items-center w-full mb-4 gap-4 shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border p-4 rounded-xl">
           {/* flex-col-reverse sm:flex-row */}
-          <div className="flex flex-col sm:flex-row items-center sm:pb-0 gap-4">
-             {/* pb-4 */}
-            <img src="https://macromissionary.com/wp-content/uploads/2021/10/dummy-avatar-2.jpg" alt="profile-icon" className="rounded-full w-[6rem] h-[6rem] object-cover hidden"/>
+          <div className="flex flex-col sm:flex-row items-center sm:pb-0 pb-4 gap-4">
+            {/* pb-4 */}
+            <img
+              src="https://macromissionary.com/wp-content/uploads/2021/10/dummy-avatar-2.jpg"
+              alt="profile-icon"
+              className="rounded-full w-[6rem] h-[6rem] object-cover"
+            />
             <h2 className="text-3xl font-bold">
               {userName ? userName : "User"}
             </h2>
@@ -106,8 +111,13 @@ const MyCars = () => {
             </DialogContent>
           </Dialog>
         </div>
-        <h1 className="text-2xl font-bold mb-4">My Cars</h1>
-
+        <div className="flex justify-between mb-4">
+          <h1 className="text-2xl font-bold">My Cars</h1>
+          <Link to="/uploadCar">
+          {/* <Button className="rounded-full hidden" variant="default">Sell</Button> */}
+          <Button variant="outline" className="rounded-full shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 px-2.5 py-1.5 transition transform hover:scale-[1.2] duration-300 hover:shadow-lg hover:shadow-[#000]/15 dark:hover:shadow-[#fff]/15"><FiPlus/></Button>
+          </Link>
+        </div>
         <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
           {cars.length > 0 ? (
             cars.map((car) => (

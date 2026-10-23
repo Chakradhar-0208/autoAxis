@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { CustomLink as Link } from "./ui/customLink";
 import {
   CarFront,
   Fuel,

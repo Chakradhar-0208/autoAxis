@@ -4,6 +4,7 @@ import { Skeleton } from "./ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
+import {CustomLink as Link, scroll} from "./ui/customLink";
 import {
   Select,
   SelectContent,
@@ -30,7 +31,7 @@ const Home = ({ setIsLogged }) => {
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [sortBy, setSortBy] = useState("default");
-
+  const [showNoCarsMessage, setShowNoCarsMessage] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
   const makeModelMap = {
@@ -114,14 +115,15 @@ const Home = ({ setIsLogged }) => {
       });
       const data = await response.json();
       setUserData(data.user);
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (err) {
       console.error(err);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
   const getAllCars = async () => {
+    setIsLoading(true);
     try {
       const res = await fetch(`${API_URL}/car/getAllCars`);
       const data = await res.json();
@@ -129,6 +131,8 @@ const Home = ({ setIsLogged }) => {
       setFilteredCars(data);
     } catch (err) {
       console.log("Cannot fetch getAllCars", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -173,6 +177,17 @@ const Home = ({ setIsLogged }) => {
     setCurrentPage(1);
   }, [filters, sortBy]);
 
+  useEffect(() => {
+    setShowNoCarsMessage(false);
+
+    if (filteredCars.length === 0 && cars.length > 0) {
+      const timer = setTimeout(() => {
+        setShowNoCarsMessage(true);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [filteredCars, cars]);
   const clearFilters = () => {
     setFilters({
       make: "",
@@ -201,13 +216,22 @@ const Home = ({ setIsLogged }) => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="flex absolute top-6 right-8 space-x-5">
-          <Button>Logout</Button>
-        </div>
-        <div className="absolute flex flex-col items-center justify-center">
-          <Skeleton className="w-40 h-4 mb-2" />
-          <Skeleton className="w-30 h-4 mb-2" />
+      <div className="w-full min-h-screen px-4 sm:px-6 md:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-[56px]">
+          <div className="flex flex-col mb-4">
+            <Skeleton className="w-[200px] h-[36px] border " />
+          </div>
+          <Skeleton className="w-full h-[250px] md:h-[150px] rounded-xl mb-10 border" />
+          <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+          </div>
         </div>
       </div>
     );
@@ -215,7 +239,7 @@ const Home = ({ setIsLogged }) => {
 
   return (
     <div className="w-full dark:bg-[#050505] min-h-screen px-4 sm:px-6 md:px-8 lg:px-10">
-      <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-8">
+      <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-[56px]">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Featured Cars</h1>
         </div>
@@ -402,17 +426,17 @@ const Home = ({ setIsLogged }) => {
           </div>
         </fieldset>
         <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
-          {filteredCars.length > 0 ? (
-            filteredCars.map((car) => <CarCard key={car._id} car={car} />)
-          ) : (
-            <p className="text-gray-500 text-center w-full">
-              No cars match the selected filters.
-            </p>
-          )}
+          {filteredCars.length > 0
+            ? filteredCars.map((car) => <CarCard key={car._id} car={car} />)
+            : showNoCarsMessage && (
+                <p className="text-gray-500 text-center w-full">
+                  No cars match the selected filters.
+                </p>
+              )}
         </div>
         {totalPages > 1 && (
           <div className="flex justify-center mt-8 ">
-            <Pagination>
+            <Pagination onClick={scroll} >
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious

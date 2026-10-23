@@ -1,7 +1,7 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "./theme-provider";
-
+import { CustomLink as Link } from "./ui/customLink";
 const CarCard = ({ car }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();

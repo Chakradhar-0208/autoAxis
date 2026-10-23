@@ -4,7 +4,8 @@ import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Button } from "./ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {CustomLink as Link} from "./ui/customLink";
 import {
   Dialog,
   DialogClose,

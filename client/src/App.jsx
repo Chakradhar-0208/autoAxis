@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Header from "./components/Header";
+import {ScrollToTop} from "./components/scrollToTop";
 import { useEffect, useState } from "react";
 import UserCars from "./components/Profile";
 import ListACar from "./components/SellCar";
@@ -151,6 +152,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        {/* <ScrollToTop /> */}
         <Toaster position="top-right" />
         <AppRouter
           isLogged={isLogged}

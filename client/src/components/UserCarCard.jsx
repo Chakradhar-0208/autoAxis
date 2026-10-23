@@ -1,6 +1,6 @@
 import React from "react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { CustomLink as Link } from "./ui/customLink";
 import { useTheme } from "./theme-provider";
 import { Button } from "@/components/ui/button";
 import {

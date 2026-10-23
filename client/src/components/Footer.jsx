@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { CustomLink as Link } from "./ui/customLink";
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { useTheme } from "./theme-provider";
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="px-4 sm:px-6 md:px-8 lg:px-10 pt-8 sm:pt-10 pb-8 ">
         <div className="max-w-7xl w-full grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:gap-8">
           <div>
-            <a href="/">
+            <Link to="/">
               <img
                 src={
                   resolvedTheme === "dark"
@@ -18,7 +18,7 @@ const Footer = () => {
                 alt="logo"
                 className="max-w-[110px] sm:max-w-[150px] transition-all duration-300 -ml-2"
               />
-            </a>
+            </Link>
             <p className="mt-2 text-sm ">
               Your trusted platform to buy, sell, and explore used cars with
               ease. Empowering car enthusiasts and sellers with seamless
@@ -36,17 +36,22 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/cars" className="">
+                <Link to="/" className="hidden">
                   Browse Cars
                 </Link>
               </li>
               <li>
-                <Link to="/uploadCar" className="">
+                <Link to="/profile">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link to="/sellCar">
                   Sell Your Car
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="">
+                <Link to="/about">
                   About Us
                 </Link>
               </li>
@@ -55,7 +60,7 @@ const Footer = () => {
 
           <div className="sm:mx-auto">
             <h3 className="text-lg font-semibold dark:text-white mb-2">
-              Contact
+              Contact Us
             </h3>
             <ul className="text-sm space-y-1">
               <li>

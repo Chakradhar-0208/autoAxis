@@ -216,8 +216,8 @@ const Home = ({ setIsLogged }) => {
 
   if (isLoading) {
     return (
-      <div className="w-full min-h-screen px-4 sm:px-6 md:px-8 lg:px-10">
-        <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-[56px]">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10">
+        <div className="max-w-7xl mx-auto overflow-hidden pb-12">
           <div className="flex flex-col mb-4">
             <Skeleton className="w-[200px] h-[36px] border " />
           </div>
@@ -238,8 +238,8 @@ const Home = ({ setIsLogged }) => {
   }
 
   return (
-    <div className="w-full dark:bg-[#050505] min-h-screen px-4 sm:px-6 md:px-8 lg:px-10">
-      <div className="max-w-7xl mx-auto overflow-hidden min-h-screen pb-[56px]">
+    <div className="w-full dark:bg-[#050505] px-4 sm:px-6 md:px-8 lg:px-10">
+      <div className="max-w-7xl mx-auto overflow-hidden pb-12">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Featured Cars</h1>
         </div>
@@ -435,7 +435,7 @@ const Home = ({ setIsLogged }) => {
               )}
         </div>
         {totalPages > 1 && (
-          <div className="flex justify-center mt-8 ">
+          <div className="flex justify-center mt-12 ">
             <Pagination onClick={scroll} >
               <PaginationContent>
                 <PaginationItem>

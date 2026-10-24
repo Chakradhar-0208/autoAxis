@@ -4,8 +4,9 @@ import { FiPlus } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 import { useNavigate } from "react-router-dom";
-import {CustomLink as Link} from "./ui/customLink";
+import { CustomLink as Link } from "./ui/customLink";
 import {
   Dialog,
   DialogClose,
@@ -21,6 +22,7 @@ const MyCars = () => {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const userName = localStorage.getItem("userName");
   const { theme } = useTheme();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -36,7 +38,10 @@ const MyCars = () => {
 
     fetch(`${API_URL}/car/getCarsByUser/${userId}`)
       .then((res) => res.json())
-      .then((data) => setCars(data))
+      .then((data) => {
+        setIsLoading(false);
+        setCars(data);
+      })
       .catch((err) => {
         console.error("Failed to fetch cars", err);
         toast.error("Failed to load your cars.");
@@ -63,9 +68,27 @@ const MyCars = () => {
       toast.error("Logout failed. Please try again.");
     }
   };
-
+  if (isLoading)
+    return (
+      <div className="dark:bg-[#050505] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pb- 12">
+        <div className="max-w-7xl mx-auto">
+          <Skeleton className="w-full h-[250px] sm:h-[150px] border rounded-xl mb-4" />
+          <Skeleton className="border w-[120px] h-[28px] mb-8" />
+          <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+            <Skeleton className="border rounded-xl min-w-[18rem] xxs:min-w-[20rem] xs:min-w-[18rem] max-w-[22rem] h-[350px]" />
+          </div>
+        </div>
+      </div>
+    );
   return (
-    <div className="dark:bg-[#050505] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pb-8">
+    <div className="dark:bg-[#050505] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 pb-14">
       <div className="max-w-7xl mx-auto">
         <div className="flex  flex-col-reverse sm:flex-row justify-between items-center w-full mb-4 gap-4 shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border p-4 rounded-xl">
           {/* flex-col-reverse sm:flex-row */}
@@ -115,8 +138,13 @@ const MyCars = () => {
         <div className="flex justify-between mb-4">
           <h1 className="text-2xl font-bold">My Cars</h1>
           <Link to="/sellCar">
-          {/* <Button className="rounded-full hidden" variant="default">Sell</Button> */}
-          <Button variant="outline" className="rounded-full shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 px-2.5 py-1.5 transition transform hover:scale-[1.2] duration-300 hover:shadow-lg hover:shadow-[#000]/15 dark:hover:shadow-[#fff]/15"><FiPlus/></Button>
+            {/* <Button className="rounded-full hidden" variant="default">Sell</Button> */}
+            <Button
+              variant="outline"
+              className="rounded-full shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 px-2.5 py-1.5 transition transform hover:scale-[1.2] duration-300 hover:shadow-lg hover:shadow-[#000]/15 dark:hover:shadow-[#fff]/15"
+            >
+              <FiPlus />
+            </Button>
           </Link>
         </div>
         <div className="flex flex-wrap justify-evenly gap-y-6 gap-x-4">

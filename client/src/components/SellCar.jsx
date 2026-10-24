@@ -93,8 +93,8 @@ const ListACar = () => {
   };
 
   return (
-    <div className="max-w-full dark:bg-[#050505] ">
-      <div className="max-w-[90%] md:max-w-2xl mx-auto flex flex-col justify-center items-center space-y-3 bg-white dark:bg-black shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border mb-8 rounded-xl p-6">
+    <div className="max-w-full dark:bg-[#050505]">
+      <div className="max-w-[90%] md:max-w-2xl mx-auto flex flex-col justify-center items-center space-y-3 bg-white dark:bg-black shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border mb-14 rounded-xl p-6">
         <Form>
           <h1 className="font-bold mb-3 text-3xl">Sell Your Car</h1>
           <div className="w-full">

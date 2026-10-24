@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "./ui/skeleton";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -17,6 +18,7 @@ const UpdateCar = () => {
   const navigate = useNavigate();
 
   const [car, setCar] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
@@ -56,6 +58,7 @@ const UpdateCar = () => {
           tag: data.tag || "",
           description: data.description || "",
         });
+        setIsLoading(false);
       });
   }, [id]);
 
@@ -107,10 +110,39 @@ const UpdateCar = () => {
     }
   };
 
-  if (!car) return <div className="text-center mt-10">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 border rounded-xl mb-14">
+        <Skeleton className="w-[180px] h-[36px] mx-auto border mb-6 " />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {[
+            ["make", "Make"],
+            ["model", "Model"],
+            ["price", "Price"],
+            ["year", "Year"],
+            ["variant", "Variant"],
+            ["tag", "Tag"],
+            ["location", "Location"],
+            ["mileage", "Mileage"],
+            ["color", "Color"],
+            ["description", "Description"],
+            ["fuelType", "Fuel Type"],
+            ["transmission", "Transmisson"],
+            ["upload", "Upload"],
+          ].map((key) => (
+            <div className="space-y-1">
+              <Skeleton className=" border w-full h-[36px]" />
+            </div>
+          ))}
+          <Button type="submit" className="w-full mt-2" disabled={true}>
+          Update
+          </Button>
+        </form>
+      </div>
+    );
 
   return (
-    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-white dark:bg-black shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border rounded-xl mb-8">
+    <div className="max-w-[90%] md:max-w-2xl mx-auto p-6 bg-white dark:bg-black shadow-md shadow-[#000]/10 dark:shadow-[#fff]/10 border rounded-xl mb-14">
       <h2 className="text-3xl font-bold mb-6 text-center">Update Car</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {[
